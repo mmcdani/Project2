@@ -135,29 +135,129 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="quarto" class="level2">
-<h2 class="anchored" data-anchor-id="quarto">Quarto</h2>
-<p>Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <a href="https://quarto.org" class="uri">https://quarto.org</a>.</p>
-</section>
-<section id="running-code" class="level2">
-<h2 class="anchored" data-anchor-id="running-code">Running Code</h2>
-<p>When you click the <strong>Render</strong> button a document will be generated that includes both content and the output of embedded code. You can embed code like this:</p>
+<p>import necessary libraries</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">+</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 2</code></pre>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(jsonlite)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</div>
-<p>You can add options to executable code like this</p>
+<p>load data</p>
 <div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>mobile_device_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/user_behavior_dataset.csv"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">|&gt;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">user_id =</span> <span class="st">`</span><span class="at">User ID</span><span class="st">`</span>,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">device_model =</span> <span class="st">`</span><span class="at">Device Model</span><span class="st">`</span>,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">operating_system =</span> <span class="st">`</span><span class="at">Operating System</span><span class="st">`</span>,</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">app_usage_time =</span> <span class="st">`</span><span class="at">App Usage Time (min/day)</span><span class="st">`</span>,</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">screen_on_time =</span> <span class="st">`</span><span class="at">Screen On Time (hours/day)</span><span class="st">`</span>,</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">battery_drain =</span> <span class="st">`</span><span class="at">Battery Drain (mAh/day)</span><span class="st">`</span>,</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">num_app_installed =</span> <span class="st">`</span><span class="at">Number of Apps Installed</span><span class="st">`</span>,</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">data_usage =</span> <span class="st">`</span><span class="at">Data Usage (MB/day)</span><span class="st">`</span>,</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">age =</span> Age,</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">gender =</span> Gender,</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">user_behavior_class =</span> <span class="st">`</span><span class="at">User Behavior Class</span><span class="st">`</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>mobile_device_data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 4</code></pre>
+<pre><code># A tibble: 700 × 11
+   user_id device_model       operating_system app_usage_time screen_on_time
+     &lt;dbl&gt; &lt;chr&gt;              &lt;chr&gt;                     &lt;dbl&gt;          &lt;dbl&gt;
+ 1       1 Google Pixel 5     Android                     393            6.4
+ 2       2 OnePlus 9          Android                     268            4.7
+ 3       3 Xiaomi Mi 11       Android                     154            4  
+ 4       4 Google Pixel 5     Android                     239            4.8
+ 5       5 iPhone 12          iOS                         187            4.3
+ 6       6 Google Pixel 5     Android                      99            2  
+ 7       7 Samsung Galaxy S21 Android                     350            7.3
+ 8       8 OnePlus 9          Android                     543           11.4
+ 9       9 Samsung Galaxy S21 Android                     340            7.7
+10      10 iPhone 12          iOS                         424            6.6
+# ℹ 690 more rows
+# ℹ 6 more variables: battery_drain &lt;dbl&gt;, num_app_installed &lt;dbl&gt;,
+#   data_usage &lt;dbl&gt;, age &lt;dbl&gt;, gender &lt;chr&gt;, user_behavior_class &lt;dbl&gt;</code></pre>
 </div>
 </div>
-<p>The <code>echo: false</code> option disables the printing of code (only output is displayed).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(mobile_device_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "user_id"             "device_model"        "operating_system"   
+ [4] "app_usage_time"      "screen_on_time"      "battery_drain"      
+ [7] "num_app_installed"   "data_usage"          "age"                
+[10] "gender"              "user_behavior_class"</code></pre>
+</div>
+</div>
+<p>create factor versions of some variables to use</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>mobile_device_data <span class="ot">&lt;-</span> mobile_device_data <span class="sc">|&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(<span class="fu">across</span>(</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(user_id, device_model, operating_system, gender, user_behavior_class),</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>as.factor</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>create a one way contingency table</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>one_way_table <span class="ot">&lt;-</span> mobile_device_data <span class="sc">|&gt;</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(gender) <span class="sc">|&gt;</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>(gender) <span class="sc">|&gt;</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">count =</span> <span class="fu">n</span>())</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>one_way_table</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 2
+  gender count
+  &lt;fct&gt;  &lt;int&gt;
+1 Female   336
+2 Male     364</code></pre>
+</div>
+</div>
+<p>create a two way contingency table - comparing which operating system is used more often between males and females</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>two_way_table <span class="ot">&lt;-</span> mobile_device_data <span class="sc">|&gt;</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(operating_system, gender) <span class="sc">|&gt;</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>(operating_system, gender) <span class="sc">|&gt;</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">count =</span> <span class="fu">n</span>()) <span class="sc">|&gt;</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> gender, <span class="at">values_from =</span> count, <span class="at">values_fill =</span> <span class="dv">0</span>)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>two_way_table</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 3
+# Groups:   operating_system [2]
+  operating_system Female  Male
+  &lt;fct&gt;             &lt;int&gt; &lt;int&gt;
+1 Android             262   292
+2 iOS                  74    72</code></pre>
+</div>
+</div>
+<p>summarize numerical variables</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>mobile_device_data <span class="sc">|&gt;</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">where</span>(is.numeric),</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">list</span>(</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">mean =</span> mean,</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">sd =</span> sd,</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">median =</span> median,</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">max =</span> max</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">.names =</span> <span class="st">"{.col}.{.fn}"</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  ))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 24
+  app_usage_time.mean app_usage_time.sd app_usage_time.median app_usage_time.max
+                &lt;dbl&gt;             &lt;dbl&gt;                 &lt;dbl&gt;              &lt;dbl&gt;
+1                271.              177.                  228.                598
+# ℹ 20 more variables: screen_on_time.mean &lt;dbl&gt;, screen_on_time.sd &lt;dbl&gt;,
+#   screen_on_time.median &lt;dbl&gt;, screen_on_time.max &lt;dbl&gt;,
+#   battery_drain.mean &lt;dbl&gt;, battery_drain.sd &lt;dbl&gt;,
+#   battery_drain.median &lt;dbl&gt;, battery_drain.max &lt;dbl&gt;,
+#   num_app_installed.mean &lt;dbl&gt;, num_app_installed.sd &lt;dbl&gt;,
+#   num_app_installed.median &lt;dbl&gt;, num_app_installed.max &lt;dbl&gt;,
+#   data_usage.mean &lt;dbl&gt;, data_usage.sd &lt;dbl&gt;, data_usage.median &lt;dbl&gt;, …</code></pre>
+</div>
+</div>
 
 
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

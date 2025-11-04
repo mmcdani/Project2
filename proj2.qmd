@@ -5,6 +5,7 @@ editor: visual
 execute:
   warning: false
   message: false
+  df-print: kable
 editor_options: 
   chunk_output_type: console
 ---

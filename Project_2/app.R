@@ -23,8 +23,19 @@ ui <- fluidPage(
         selected = "Number of Apps Installed"
       )
     ),
+
     
     mainPanel(
+      tabsetPanel(
+        tabPanel('About',
+                 h3('about section'),
+                 p('about info'),
+                 h4('Data Source'),
+                 p(a('Click this link to view the data source',
+                     href = 'https://www.kaggle.com/datasets/valakhorasani/mobile-device-usage-and-user-behavior-dataset'),
+                   p('provide purpose of the sidebar tab'),
+                   img("Project_2/proj.jfif")))
+      ),
       plotOutput("barPlot")
     )
   )

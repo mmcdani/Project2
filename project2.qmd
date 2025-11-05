@@ -92,3 +92,84 @@ mobile_device_data |>
     .names = "{.col}.{.fn}"
   ))
 ```
+
+6 plots 
+barplot
+```{r}
+mobile_barplot <- mobile_device_data |>
+  group_by(gender, operating_system) |>
+  summarize(count = n(), .groups = "drop")
+
+ggplot(mobile_barplot, aes(x = gender, y = count, fill = operating_system)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  xlab("Gender") +
+  ylab("Number of Users") +
+  ggtitle("Comparison of Operating Systems by Gender") +
+  scale_fill_discrete(name = "Operating System")
+```
+
+scatter plot
+```{r}
+ggplot(mobile_device_data, aes(x = age, y = num_app_installed, color = gender)) +
+  geom_point(alpha = 0.6) +
+  xlab("Age") +
+  ylab("Number of Apps Installed") +
+  ggtitle("Number of Installed Apps vs Age by Gender") +
+  scale_color_discrete(name = "Gender") 
+```
+
+boxplot
+```{r}
+ggplot(mobile_device_data, aes(x = operating_system, y = num_app_installed, fill = operating_system)) +
+  geom_boxplot(alpha = 0.7, outlier.color = "red", outlier.alpha = 0.6) +
+  xlab("Operating System") +
+  ylab("Number of Apps Installed") +
+  ggtitle("Distribution of Installed Apps by Operating System") +
+  scale_fill_discrete(name = "Operating System") 
+```
+
+
+line graph
+```{r}
+ggplot(mobile_device_data, aes(x = screen_on_time, y = battery_drain)) +
+  geom_point(alpha = 0.6, color = "steelblue") +
+  geom_smooth(method = "lm", se = TRUE, color = "red") +
+  xlab("Screen-On Time (hours/day)") +
+  ylab("Battery Drain (mAh/day)") +
+  ggtitle("Relationship Between Screen-On Time and Battery Drain") 
+```
+stacked bar graoh
+```{r}
+# Aggregate total apps per OS and gender
+mobile_device_data |>
+  group_by(operating_system, gender) |>
+  summarise(total_apps = sum(num_app_installed, na.rm = TRUE), .groups = "drop") |>
+  ggplot(aes(x = operating_system, y = total_apps, fill = gender)) +
+  geom_col(position = "dodge") +  # side-by-side bars
+  labs(
+    x = "Operating System",
+    y = "Total Number of Apps Installed",
+    fill = "Gender",
+    title = "Total Apps Installed by OS and Gender"
+  )
+```
+
+
+heat map
+```{r}
+mobile_device_data |>
+  mutate(age_group = cut(age, breaks = c(0,20,30,40,50,60,100), right = FALSE)) |>
+  group_by(age_group, operating_system) |>
+  summarise(avg_screen_time = mean(screen_on_time, na.rm = TRUE), .groups = "drop") |>
+  ggplot(aes(x = operating_system, y = age_group, fill = avg_screen_time)) +
+  geom_tile(color = "white") +
+  scale_fill_gradient(low = "lightblue", high = "darkblue") +
+  labs(
+    x = "Operating System",
+    y = "Age Group",
+    fill = "Avg Screen Time (hrs/day)",
+    title = "Screen Time by Age Group and Operating System"
+  )
+```
+
+

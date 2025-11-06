@@ -1,1 +1,2 @@
-# Project2
+# Project2 - Mobile Device Usage 
+This shiny website is intended for users to be able to compare different variables and relations between mobile device usage. The website has an About tab, a Data Download tab, and a Data exploration tab. The about tab is used to give the user insight about the data, the data download tab allows the user to view and download the data, and the data exploration tab allows the user to interact with the data and see the relationships between different variables. 

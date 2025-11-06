@@ -1,5 +1,5 @@
 ---
-title: "Project2"
+title: "Project 2 - Mobile Device Usage"
 format: html
 editor: visual
 execute:

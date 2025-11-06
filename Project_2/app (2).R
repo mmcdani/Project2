@@ -47,10 +47,10 @@ ui <- fluidPage(
             inline = TRUE
           )
         ),
-        mainPanel(
-          uiOutput("explore_ui"),
-          plotOutput("barPlot")
-        )
+      mainPanel(
+        uiOutput("explore_ui"),
+        plotOutput("barPlot")
+      )
       )
     )
   )
